@@ -12,13 +12,10 @@ from datamodules import MRIAltzheimerDataModule
 from models import PlLeNet
 from transformations import mri_jpg_preprocessing
 
-from lightning.pytorch.loggers import TensorBoardLogger
-
-
 BATCHSIZE = 32
 CLASSES = 4
 EPOCHS = 20
-N_TRIALS = 10
+N_TRIALS = 20
 TIMEOUT = 600
 INPUT_SHAPE = (1, 188, 156)
 DATA_DIR = os.path.join(os.getcwd(), "datamodules", "data")
@@ -26,7 +23,7 @@ DATA_DIR = os.path.join(os.getcwd(), "datamodules", "data")
 
 def objective(trial: optuna.trial.Trial) -> float:
     n_conv_blocks = trial.suggest_int("n_conv_blocks", 1, 5)
-    learning_rate = trial.suggest_loguniform("learning_rate", 1e-7, 1e-2)
+    learning_rate = trial.suggest_loguniform("learning_rate", 1e-8, 1e-3)
 
     model = PlLeNet(
         input_shape=INPUT_SHAPE,
@@ -37,10 +34,10 @@ def objective(trial: optuna.trial.Trial) -> float:
     datamodule = MRIAltzheimerDataModule(
         data_dir=DATA_DIR, batch_size=BATCHSIZE, transform=mri_jpg_preprocessing
     )
-    logger = TensorBoardLogger("tb_logs", name="n_conv_blocks_lr_tune")
+
     trainer = pl.Trainer(
-        fast_dev_run=True,
-        logger=logger,
+        fast_dev_run=False,
+        logger=True,
         enable_checkpointing=False,
         max_epochs=EPOCHS,
         accelerator="gpu",
