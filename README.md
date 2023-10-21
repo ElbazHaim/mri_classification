@@ -1,11 +1,10 @@
-Certainly, here's the refined README for your project:
+## MRI Alzheimer's Dementia Stage Classifier
 
-# Deep Learning Project README
+### Overview
+This project is a deep learning endeavor focused on Alzheimer's image classification with four classes. It leverages PyTorch Lightning for streamlined training and Optuna for hyperparameter tuning.
 
-## Overview
-This project is a deep learning endeavor focused on Alzheimer's image classification with four classes. It leverages PyTorch Lightning for streamlined training and Optuna for hyperparameter tuning. The primary organization of the project includes datamodules, neural network models, image transformations, a Makefile for easy execution, a tuning script (tune.py), and the necessary files for version control such as .gitignore and requirements.txt.
 
-## Project Structure
+### Project Structure
 The project is organized as follows:
 
 - `tune.py`: Serves as the main training and tuning script. Orchestrates training and hyperparameter optimization using Optuna.
@@ -25,7 +24,7 @@ The project is organized as follows:
 - `README.md`: The current document :blush:
 
 
-## Usage
+### Usage
 To use this project:
 
 1. Clone or download the repository to your local machine.
@@ -42,7 +41,7 @@ make install
 make tune
 ```
 
-## Credits
+### Credits
 Data source: 
 
 https://www.kaggle.com/datasets/tourist55/alzheimers-dataset-4-class-of-images
