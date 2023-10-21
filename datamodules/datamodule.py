@@ -45,7 +45,7 @@ class MRIAltzheimerDataModule(pl.LightningDataModule):
 
         self.valtrain_dataset = ImageFolder(self.train_dir, transform=self.transform)
         self.test_dataset = ImageFolder(self.test_dir, transform=self.transform)
-        
+
         train_size, val_size = int(
             len(self.valtrain_dataset) * self.train_val_ratio
         ), int(len(self.valtrain_dataset) * (1 - self.train_val_ratio))
