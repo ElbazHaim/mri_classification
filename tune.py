@@ -5,7 +5,6 @@ import os
 import optuna
 import pytorch_lightning as pl
 
-from lightning.pytorch.callbacks.early_stopping import EarlyStopping
 from icecream import ic
 
 from datamodules import MRIAltzheimerDataModule
@@ -43,7 +42,7 @@ def objective(trial: optuna.trial.Trial) -> float:
         accelerator="gpu",
         devices=1,
         callbacks=[
-            EarlyStopping(
+            pl.callbacks.EarlyStopping(
                 monitor="val_loss",
                 min_delta=0.00,
                 patience=3,
