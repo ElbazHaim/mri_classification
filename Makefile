@@ -15,7 +15,7 @@ run:
 	python tune.py
 
 tensorboard:
-	tensorboard --logdir=tb_logs
+	tensorboard --logdir=lightning_logs
 
 monitor:
 	nvtop
