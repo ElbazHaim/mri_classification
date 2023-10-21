@@ -14,15 +14,15 @@ from transformations import mri_jpg_preprocessing
 BATCHSIZE = 32
 CLASSES = 4
 EPOCHS = 20
-N_TRIALS = 20
-TIMEOUT = 600
+N_TRIALS = 1000
+TIMEOUT = 3600
 INPUT_SHAPE = (1, 188, 156)
 DATA_DIR = os.path.join(os.getcwd(), "datamodules", "data")
 
 
 def objective(trial: optuna.trial.Trial) -> float:
     n_conv_blocks = trial.suggest_int("n_conv_blocks", 1, 5)
-    learning_rate = trial.suggest_loguniform("learning_rate", 1e-8, 1e-3)
+    learning_rate = trial.suggest_loguniform("learning_rate", 1e-9, 1e-3)
 
     model = PlLeNet(
         input_shape=INPUT_SHAPE,
