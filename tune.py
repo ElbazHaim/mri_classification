@@ -5,7 +5,7 @@ import os
 import optuna
 import pytorch_lightning as pl
 
-from optuna.integration import PyTorchLightningPruningCallback
+from lightning.pytorch.callbacks.early_stopping import EarlyStopping
 from icecream import ic
 
 from datamodules import MRIAltzheimerDataModule
@@ -38,17 +38,16 @@ def objective(trial: optuna.trial.Trial) -> float:
     trainer = pl.Trainer(
         fast_dev_run=False,
         logger=True,
-        enable_checkpointing=False,
+        enable_checkpointing=True,
         max_epochs=EPOCHS,
         accelerator="gpu",
         devices=1,
-        callbacks=[PyTorchLightningPruningCallback(trial, monitor="val_loss")],
+        callbacks=[EarlyStopping(monitor="val_loss", min_delta=0.00, patience=3, verbose=False, mode="min")],
     )
     hyperparameters = dict(num_conv_blocks=n_conv_blocks, learning_rate=learning_rate)
     trainer.logger.log_hyperparams(hyperparameters)
 
     trainer.fit(model, datamodule=datamodule)
-    trainer.validate(model, datamodule=datamodule)
 
     return trainer.callback_metrics["val_loss"].item()
 
