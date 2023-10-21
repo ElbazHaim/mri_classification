@@ -42,7 +42,15 @@ def objective(trial: optuna.trial.Trial) -> float:
         max_epochs=EPOCHS,
         accelerator="gpu",
         devices=1,
-        callbacks=[EarlyStopping(monitor="val_loss", min_delta=0.00, patience=3, verbose=False, mode="min")],
+        callbacks=[
+            EarlyStopping(
+                monitor="val_loss",
+                min_delta=0.00,
+                patience=3,
+                verbose=False,
+                mode="min",
+            )
+        ],
     )
     hyperparameters = dict(num_conv_blocks=n_conv_blocks, learning_rate=learning_rate)
     trainer.logger.log_hyperparams(hyperparameters)
