@@ -123,8 +123,3 @@ class PlLeNet(pl.LightningModule):
     def configure_optimizers(self):
         return torch.optim.Adam(self.parameters(), lr=self.learning_rate)
 
-
-if __name__ == "__main__":
-    from torchsummary import summary
-
-    summary(LeNet().to("cuda"), input_size=(1, 188, 156))
