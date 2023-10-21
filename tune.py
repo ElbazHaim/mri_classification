@@ -9,7 +9,7 @@ from optuna.integration import PyTorchLightningPruningCallback
 from icecream import ic
 
 from datamodules import MRIAltzheimerDataModule
-from models import LeNet
+from models import PlLeNet
 from transformations import mri_jpg_preprocessing
 
 from lightning.pytorch.loggers import TensorBoardLogger
@@ -31,7 +31,7 @@ def objective(trial: optuna.trial.Trial) -> float:
     n_conv_blocks = trial.suggest_int("n_conv_blocks", 1, 3)
     learning_rate = trial.suggest_loguniform("learning_rate", 1e-5, 1e-1)
 
-    model = LeNet(
+    model = PlLeNet(
         input_shape=INPUT_SHAPE,
         num_classes=CLASSES,
         num_conv_blocks=n_conv_blocks,

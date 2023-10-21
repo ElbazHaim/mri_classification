@@ -1,2 +1,1 @@
-from mlp import MultiLayerPerceptron
-from lenet import LeNet
+from lenet import PlLeNet

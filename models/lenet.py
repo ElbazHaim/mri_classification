@@ -79,7 +79,7 @@ def get_conv_blocks(in_channels: int = 1, num_conv_blocks: int = 1):
 #         return x
 
 
-class LitLeNet(pl.LightningModule):
+class PlLeNet(pl.LightningModule):
     def __init__(
         self,
         input_shape: tuple = (1, 188, 156),
