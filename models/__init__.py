@@ -1,1 +1,1 @@
-from lenet import PlLeNet
+from .lenet import PlLeNet

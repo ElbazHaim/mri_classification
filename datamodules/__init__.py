@@ -1,1 +1,1 @@
-from datamodule import MRIAltzheimerDataModule
+from .datamodule import MRIAltzheimerDataModule

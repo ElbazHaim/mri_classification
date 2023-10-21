@@ -12,15 +12,15 @@ class MRIAltzheimerDataModule(pl.LightningDataModule):
         data_dir: str = "data",
         batch_size: int = 64,
         transform=None,
-        train_val_ratio: int = 0.3,
+        val_train_ratio: int = 0.3,
     ):
         super().__init__()
         self.data_dir = data_dir
         self.batch_size = batch_size
         self.transform = transform
-        self.train_val_ratio = train_val_ratio
-        self.train_dir = self.data_dir + "train"
-        self.test_dir = self.data_dir + "test"
+        self.val_train_ratio = val_train_ratio
+        self.train_dir = self.data_dir + "/train"
+        self.test_dir = self.data_dir + "/test"
 
     def setup(self, stage: str):
         if not Path(self.data_dir).is_dir():
@@ -46,9 +46,9 @@ class MRIAltzheimerDataModule(pl.LightningDataModule):
         self.valtrain_dataset = ImageFolder(self.train_dir, transform=self.transform)
         self.test_dataset = ImageFolder(self.test_dir, transform=self.transform)
 
-        train_size, val_size = int(
-            len(self.valtrain_dataset) * self.train_val_ratio
-        ), int(len(self.valtrain_dataset) * (1 - self.train_val_ratio))
+        val_size = int(len(self.valtrain_dataset) * self.val_train_ratio)
+        train_size = len(self.valtrain_dataset) - val_size
+
         self.training_dataset, self.validation_dataset = random_split(
             self.valtrain_dataset, [train_size, val_size]
         )

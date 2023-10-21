@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import pytorch_lightning as pl
+import torchmetrics
 
 
 class ConvBlock(nn.Module):
@@ -44,39 +45,14 @@ def get_conv_blocks(in_channels: int = 1, num_conv_blocks: int = 1):
 
     for _ in range(num_conv_blocks):
         feature_extractor_layers.extend(
-            [ConvBlock(in_channels, 6, 5, padding=1), ConvBlock(6, 16, 5, padding=1)]
+            [
+                ConvBlock(in_channels, out_channels, 5, padding=1),
+            ]
         )
         in_channels = out_channels
         out_channels *= 2
 
     return nn.Sequential(*feature_extractor_layers)
-
-
-# class LeNet(nn.Module):
-#     def __init__(
-#         self,
-#         input_shape: tuple = (1, 188, 156),
-#         num_classes: int = 4,
-#         num_conv_blocks: int = 1,
-#         num_fc_layers: int = 1,
-#     ):
-#         super(LeNet, self).__init__()
-#         self.input_shape = input_shape
-#         self.num_classes = num_classes
-#         self.num_conv_blocks = num_conv_blocks
-#         self.num_fc_layers = num_fc_layers
-
-#         self.feature_extractor = get_conv_blocks(input_shape[0], num_conv_blocks)
-#         input_example = torch.zeros(1, 1, input_shape[-2], input_shape[-1])
-#         _x = self.feature_extractor(input_example)
-#         conv_output_size = _x.view(_x.size(0), -1).shape[-1]
-
-#         self.classifier = FullyConnectedBlock(conv_output_size, 150, num_classes)
-
-#     def forward(self, x):
-#         x = self.feature_extractor(x)
-#         x = self.classifier(x)
-#         return x
 
 
 class PlLeNet(pl.LightningModule):
@@ -92,7 +68,7 @@ class PlLeNet(pl.LightningModule):
         self.num_classes = num_classes
         self.learning_rate = learning_rate
 
-        self.example_input_array = torch.randn(1, 1, input_shape[-2], input_shape[-1])
+        self.example_input_array = torch.randn(32, 1, input_shape[-2], input_shape[-1])
 
         self.feature_extractor = get_conv_blocks(input_shape[0], num_conv_blocks)
 
@@ -110,6 +86,12 @@ class PlLeNet(pl.LightningModule):
         y_hat = self(x)
         loss = F.cross_entropy(y_hat, y)
         self.log("train_loss", loss)
+
+        acc = torchmetrics.functional.accuracy(
+            y_hat, y, task="multiclass", num_classes=4
+        )
+        self.log("train_acc", acc)
+
         return loss
 
     def validation_step(self, batch, batch_idx):
@@ -117,6 +99,12 @@ class PlLeNet(pl.LightningModule):
         y_hat = self(x)
         loss = F.cross_entropy(y_hat, y)
         self.log("val_loss", loss)
+
+        acc = torchmetrics.functional.accuracy(
+            y_hat, y, task="multiclass", num_classes=4
+        )
+        self.log("train_acc", acc)
+
         return loss
 
     def test_step(self, batch, batch_idx):
@@ -124,6 +112,12 @@ class PlLeNet(pl.LightningModule):
         y_hat = self(x)
         loss = F.cross_entropy(y_hat, y)
         self.log("test_loss", loss)
+
+        acc = torchmetrics.functional.accuracy(
+            y_hat, y, task="multiclass", num_classes=4
+        )
+        self.log("train_acc", acc)
+
         return loss
 
     def configure_optimizers(self):
