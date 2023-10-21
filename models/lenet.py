@@ -103,7 +103,7 @@ class PlLeNet(pl.LightningModule):
         acc = torchmetrics.functional.accuracy(
             y_hat, y, task="multiclass", num_classes=4
         )
-        self.log("train_acc", acc)
+        self.log("val_acc", acc)
 
         return loss
 
@@ -116,7 +116,7 @@ class PlLeNet(pl.LightningModule):
         acc = torchmetrics.functional.accuracy(
             y_hat, y, task="multiclass", num_classes=4
         )
-        self.log("train_acc", acc)
+        self.log("test_acc", acc)
 
         return loss
 
