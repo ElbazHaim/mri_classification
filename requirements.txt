@@ -1,0 +1,8 @@
+torch
+torchvision
+lightning
+tensorboard
+optuna
+scikit-learn
+torchsummary
+icecream

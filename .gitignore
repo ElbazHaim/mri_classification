@@ -1,0 +1,7 @@
+*tb_logs*
+*lightning_logs*
+*pyc*
+*.storage*
+*.shared*
+datamodules/data
+*venv*
