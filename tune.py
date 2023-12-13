@@ -69,7 +69,3 @@ if __name__ == "__main__":
     ic(len(study.trials))
     ic(study.best_trial)
     ic(study.best_trial.value)
-
-    print("Best Hyperparameters:")
-    for key, value in study.best_trial.value.params.items():
-        ic(key, value)

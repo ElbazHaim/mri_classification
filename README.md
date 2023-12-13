@@ -3,6 +3,8 @@
 ### Overview
 This project is a deep learning endeavor focused on Alzheimer's image classification with four classes. It leverages PyTorch Lightning for streamlined training and Optuna for hyperparameter tuning.
 
+Currently only LeNet is implemented.
+
 
 ### Project Structure
 The project is organized as follows:
