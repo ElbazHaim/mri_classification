@@ -3,6 +3,6 @@ torchvision
 lightning
 tensorboard
 optuna
-scikit-learn
+scikit - learn
 torchsummary
 icecream
